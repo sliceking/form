@@ -1,7 +1,6 @@
 package form
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -103,9 +102,36 @@ func TestFields(t *testing.T) {
 				},
 			},
 		},
+		"Unexported fields should be skipped": {
+			strct: struct {
+				Name  string
+				Age   int
+				email string
+			}{
+				Name:  "stanny",
+				Age:   34,
+				email: "bob@lawblog.com",
+			},
+			want: []field{
+				{
+					Label:       "Name",
+					Name:        "Name",
+					Type:        "text",
+					Placeholder: "Name",
+					Value:       "stanny",
+				},
+				{
+					Label:       "Age",
+					Name:        "Age",
+					Type:        "text",
+					Placeholder: "Age",
+					Value:       34,
+				},
+			},
+		},
 	}
-	for _, tc := range tests {
-		t.Run(fmt.Sprintf("%T", tc.strct), func(t *testing.T) {
+	for name, tc := range tests {
+		t.Run(name, func(t *testing.T) {
 			got := fields(tc.strct)
 			if !reflect.DeepEqual(got, tc.want) {
 				t.Errorf("fields () = %v; want %v", got, tc.want)
