@@ -2,20 +2,22 @@ package form
 
 import "reflect"
 
-// func HTML(strct interface{}, tpl *template.Template) template.HTML {
-// 	return template.HTML
-// }
-
-func fields(strct interface{}) field {
+func fields(strct interface{}) []field {
+	// using reflect to inspect the structs at runtime
 	rv := reflect.ValueOf(strct)
 	t := rv.Type()
-	tf := t.Field(0)
-	return field{
-		Label:       tf.Name,
-		Name:        tf.Name,
-		Type:        "text",
-		Placeholder: tf.Name,
+	var ret []field
+	for i := 0; i < t.NumField(); i++ {
+		tf := t.Field(i)
+		f := field{
+			Label:       tf.Name,
+			Name:        tf.Name,
+			Type:        "text",
+			Placeholder: tf.Name,
+		}
+		ret = append(ret, f)
 	}
+	return ret
 }
 
 type field struct {
