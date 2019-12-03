@@ -130,9 +130,6 @@ func TestFields(t *testing.T) {
 				},
 			},
 		},
-		"Non structs shouldnt work": {
-			strct: "some string",
-		},
 	}
 	for name, tc := range tests {
 		t.Run(name, func(t *testing.T) {
