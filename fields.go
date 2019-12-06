@@ -5,6 +5,9 @@ import "reflect"
 func fields(strct interface{}) []field {
 	// using reflect to inspect the structs at runtime
 	rv := reflect.ValueOf(strct)
+	if rv.Kind() == reflect.Ptr {
+		rv = rv.Elem()
+	}
 	if rv.Kind() != reflect.Struct {
 		panic("form: invalid value; only structs are supported")
 	}
